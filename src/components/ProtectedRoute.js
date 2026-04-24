@@ -7,7 +7,7 @@ export const ProtectedRoute = ({ component: Component, ...rest }) => {
       {...rest}
       render={(props) => {
         const token = localStorage.getItem("token");
-          const role = localStorage.getItem("role");
+        //   const role = localStorage.getItem("role");
 
         if (!token) {
           return <Redirect to="/admin/login" />;

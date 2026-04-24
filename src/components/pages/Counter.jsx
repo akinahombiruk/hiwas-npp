@@ -1,17 +1,18 @@
 import React, { useEffect, useState } from "react";
 import CountUp from "react-countup";
 import { motion } from "framer-motion";
-
-export const Counter = () => {
-  const [stats, setStats] = useState([]);
-
-  // 🔥 ICON MAP (your categories)
   const iconMap = {
     "Tiny Architect Big Question": "🏛️",
     "Signal and Sign": "📡",
     "PulseaPulsea": "💓",
     "Stethoscope report": "🩺",
   };
+export const Counter = () => {
+  
+  const [stats, setStats] = useState([]);
+
+  // 🔥 ICON MAP (your categories)
+
 
   useEffect(() => {
     fetch("http://localhost:5000/api/newsletters")
