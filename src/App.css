@@ -1627,3 +1627,119 @@ footer {
   overflow-wrap: break-word;
   white-space: normal;
 }
+@media (max-width: 768px) {
+  .heroContent {
+    width: 92%;
+    padding: 20px;
+  }
+
+  .hero {
+    height: auto;
+    min-height: 100vh;
+    padding: 120px 10px 80px;
+  }
+
+  .divider {
+    width: 80px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .heroContent {
+    width: 95%;
+    padding: 18px;
+  }
+
+  .heroTitle {
+    font-size: 2rem;
+  }
+
+  .motto {
+    font-size: 1rem;
+  }
+}
+/* FIX GRID OVERFLOW SAFETY */
+.grid3,
+.grid2 {
+  width: 100%;
+}
+
+/* force wrapping safety */
+.grid2,
+.grid3 {
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+}
+@media (max-width: 992px) {
+  .services .container {
+    padding: 0 15px;
+  }
+
+  .services .box {
+    padding: 18px;
+  }
+}
+
+@media (max-width: 600px) {
+  .services .box {
+    padding: 15px;
+  }
+}
+@media (max-width: 768px) {
+  .about-card {
+    width: 100%;
+  }
+
+  .about {
+    padding: 60px 15px;
+  }
+}
+@media (max-width: 768px) {
+  .news-item {
+    flex-direction: column;
+  }
+
+  .news-image img {
+    width: 100%;
+    height: auto;
+  }
+
+  .box {
+    flex-direction: column;
+  }
+
+  .box img {
+    width: 100%;
+    height: auto;
+  }
+}
+@media (max-width: 768px) {
+  .contact .flexsb {
+    flex-direction: column;
+  }
+
+  .contact .left,
+  .contact .right {
+    width: 100%;
+  }
+}
+@media (max-width: 768px) {
+  button {
+    width: 100%;
+  }
+
+  .bottom-nav {
+    gap: 10px;
+    padding: 8px 10px;
+  }
+
+  .bottom-nav a {
+    width: 38px;
+    height: 38px;
+    font-size: 18px;
+  }
+}
+.contact-card p,
+.contact-card {
+  word-break: break-word;
+  overflow-wrap: anywhere;
+}

@@ -31,7 +31,7 @@ const Footer = () => {
           < i data-aos='zoom-in'>{item.icon}</i>
           </a>
         ))}
-        <p data-aos='zoom-in'>©2025 Akinahom Biruk. All rights reserved.
+        <p data-aos='zoom-in'>©2026 Akinahom Biruk. All rights reserved.
 </p>
       </footer>
     </>
