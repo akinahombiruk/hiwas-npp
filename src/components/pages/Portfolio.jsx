@@ -12,7 +12,9 @@ export const Portfolio = () => {
 
   // FETCH DATA
   useEffect(() => {
-    fetch("http://localhost:5000/api/newsletters")
+    // fetch("http://localhost:5000/api/newsletters")
+    fetch("https://hiwas-backend-production.up.railway.app/api/newsletters")
+
       .then((res) => res.json())
       .then((data) => {
         setList(data);
@@ -72,7 +74,9 @@ export const Portfolio = () => {
               {/* IMAGE */}
               <div className="news-image">
                 <img
-                  src={`http://localhost:5000${item.cover}`}
+                  // src={`http://localhost:5000${item.cover}`}
+                  src={`https://hiwas-backend-production.up.railway.app${item.cover}`}
+
                   alt={item.title}
                 />
               </div>
@@ -95,7 +99,7 @@ export const Portfolio = () => {
                 {/* DOWNLOAD PDF */}
                 {item.filePath && (
                   <a
-                    href={`http://localhost:5000${item.filePath}`}
+                    href={`https://hiwas-backend-production.up.railway.app${item.filePath}`}
                     target="_blank"
                     rel="noreferrer"
                     className="download-btn"

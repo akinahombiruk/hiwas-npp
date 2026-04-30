@@ -22,7 +22,9 @@ export const AdminUpload = () => {
   // ================= LOAD DATA =================
   const fetchData = async () => {
     try {
-      const res = await fetch("http://localhost:5000/api/newsletters");
+      // const res = await fetch("http://localhost:5000/api/newsletters");
+      const res = await fetch("https://hiwas-backend-production.up.railway.app/api/newsletters");
+
       const data = await res.json();
       setList(data);
     } catch (err) {
@@ -72,9 +74,10 @@ export const AdminUpload = () => {
     if (file) formData.append("file", file);
 
     const url = editingId
-      ? `http://localhost:5000/api/newsletters/${editingId}`
-      : "http://localhost:5000/api/newsletters/upload";
-
+      // ? `http://localhost:5000/api/newsletters/${editingId}`
+      // : "http://localhost:5000/api/newsletters/upload";
+ ? `https://hiwas-backend-production.up.railway.app/api/newsletters/${editingId}`
+      : "https://hiwas-backend-production.up.railway.app/api/newsletters/upload";
     const method = editingId ? "PUT" : "POST";
 
     try {
@@ -116,7 +119,9 @@ export const AdminUpload = () => {
 
     try {
       const res = await fetch(
-        `http://localhost:5000/api/newsletters/${id}`,
+        // `http://localhost:5000/api/newsletters/${id}`,
+        `https://hiwas-backend-production.up.railway.app/api/newsletters/${id}`,
+
         {
           method: "DELETE",
           headers: {
