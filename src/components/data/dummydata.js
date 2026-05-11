@@ -43,37 +43,38 @@ export const services = [
   {
     id: 1,
     icon: <Settings />,
-    title: "Editing Medical Reports",
-    desc: "We fix up medical write-ups so they’re clear, correct, and easy to read—in both Amharic and English.",
+    title: "Educate Patients",
+  //   desc: "We fix up medical write-ups so they’re clear, correct, and easy to read—in both Amharic and English.",
+  // 
   },
   {
     id: 2,
     icon: <CropRotate />,
-    title: " Simple Device Diagrams",
+    title: " Support Hospitals",
     desc: "We make easy-to-understand pictures that show how machines like ultrasound or X-ray work—great for clinics without tech support.",
   },
   {
     id: 3,
     icon: <ViewInAr />,
-    title: " Turning Tech Talk into Everyday Language",
+    title: " Empower Importers",
     desc: "We take tricky medical instructions and explain them in plain Amharic—so everyone knows how to use the tools safely.",
   },
   {
     id: 4,
     icon: <PieChart />,
-    title: "Writing Special Columns",
+    title: "Influence Public Dialogue",
     desc: "We share short stories and articles about small but powerful medical ideas—like Signal & Silence or Tiny Architects.",
   },
   {
     id: 5,
     icon: <Code />,
-    title: "Naming & Logo Help",
+    title: "Patient Experience Storytelling",
     desc: "We help you come up with strong names, logos, and slogans for your health projects—so they feel local, trusted, and easy to remember.",
   },
   {
     id: 6,
     icon: <BarChart />,
-    title: "Social Media Posts",
+    title: "Technology & Innovation Showcasing",
     desc: "We design posts that look great and make sense on LinkedIn or WhatsApp—especially when sharing medical info in a friendly way.",
   },
 ]

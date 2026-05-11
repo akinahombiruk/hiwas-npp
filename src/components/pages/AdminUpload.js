@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
 
 export const AdminUpload = () => {
   const [title, setTitle] = useState("");
@@ -143,7 +145,15 @@ export const AdminUpload = () => {
       console.error(err);
     }
   };
-
+const modules = {
+  toolbar: [
+    [{ header: [1, 2, false] }],
+    ["bold", "italic", "underline", "strike"],
+    [{ list: "ordered" }, { list: "bullet" }],
+    ["link"],
+    ["clean"],
+  ],
+};
   // ================= EDIT =================
   const handleEdit = (item) => {
     setEditingId(item._id);
@@ -193,17 +203,16 @@ export const AdminUpload = () => {
           <option value="">-- Select Category --</option>
           <option value="Tiny Architect Big Question">Tiny Architect Big Question</option>
           <option value="Signal and Sign">Signal and Sign</option>
-          <option value="PulseaPulsea">PulseaPulsea</option>
+          <option value="Pulsea">Pulsea</option>
           <option value="Stethoscope report">Stethoscope report</option>
         </select>
 
-        <textarea
-          placeholder="Write content..."
-          value={content}
-          onChange={(e) => setContent(e.target.value)}
-          rows={6}
-          required
-        />
+       <ReactQuill
+  theme="snow"
+  value={content}
+  onChange={setContent}
+  modules={modules}
+/>
 
         <input
           type="file"
@@ -241,7 +250,11 @@ export const AdminUpload = () => {
           <p>{item.category}</p>
 
           <p style={{ fontSize: "13px", color: "#555" }}>
-            {item.content?.slice(0, 120)}...
+          <div
+  dangerouslySetInnerHTML={{
+    __html: item.content?.slice(0, 200) + "...",
+  }}
+/>
           </p>
 
           <button
