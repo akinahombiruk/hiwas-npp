@@ -16,7 +16,7 @@ export const Counter = () => {
 
   useEffect(() => {
     // fetch("http://localhost:5000/api/newsletters")
-    fetch("https://hiwas-backend-production-3f41.up.railway.app/api/newsletters")
+    fetch("https://hiwas-backend-production-56c5.up.railway.app/api/newsletters")
 
       .then((res) => res.json())
       .then((data) => {

@@ -78,8 +78,8 @@ export const AdminUpload = () => {
     const url = editingId
       // ? `http://localhost:5000/api/newsletters/${editingId}`
       // : "http://localhost:5000/api/newsletters/upload";
- ? `https://hiwas-backend-production.up.railway.app/api/newsletters/${editingId}`
-      : "https://hiwas-backend-production.up.railway.app/api/newsletters/upload";
+ ? `https://hiwas-backend-production-56c5.up.railway.app/api/newsletters/${editingId}`
+      : "https://hiwas-backend-production-56c5.up.railway.app/api/newsletters/upload";
     const method = editingId ? "PUT" : "POST";
 
     try {
@@ -122,7 +122,7 @@ export const AdminUpload = () => {
     try {
       const res = await fetch(
         // `http://localhost:5000/api/newsletters/${id}`,
-        `https://hiwas-backend-production.up.railway.app/api/newsletters/${id}`,
+        `https://hiwas-backend-production-56c5.up.railway.app/api/newsletters/${id}`,
 
         {
           method: "DELETE",
