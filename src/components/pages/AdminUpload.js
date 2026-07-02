@@ -25,7 +25,7 @@ export const AdminUpload = () => {
   const fetchData = async () => {
     try {
       // const res = await fetch("http://localhost:5000/api/newsletters");
-      const res = await fetch("https://hiwas-backend-production.up.railway.app/api/newsletters");
+      const res = await fetch("https://hiwas-backend-production-56c5.up.railway.app/api/newsletters");
 
       const data = await res.json();
       setList(data);
