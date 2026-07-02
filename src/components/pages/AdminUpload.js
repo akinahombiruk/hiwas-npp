@@ -8,6 +8,8 @@ export const AdminUpload = () => {
   const [content, setContent] = useState("");
   const [file, setFile] = useState(null);
   const [cover, setCover] = useState(null);
+  const [fileName, setFileName] = useState("");
+  const [coverName, setCoverName] = useState("");
 
   const [list, setList] = useState([]);
   const [editingId, setEditingId] = useState(null);
@@ -24,9 +26,7 @@ export const AdminUpload = () => {
   // ================= LOAD DATA =================
   const fetchData = async () => {
     try {
-      // const res = await fetch("http://localhost:5000/api/newsletters");
       const res = await fetch("https://hiwas-backend-production-56c5.up.railway.app/api/newsletters");
-
       const data = await res.json();
       setList(data);
     } catch (err) {
@@ -42,7 +42,6 @@ export const AdminUpload = () => {
   const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("role");
-
     window.location.href = "/admin/login";
   };
 
@@ -53,6 +52,8 @@ export const AdminUpload = () => {
     setContent("");
     setFile(null);
     setCover(null);
+    setFileName("");
+    setCoverName("");
     setEditingId(null);
   };
 
@@ -76,9 +77,7 @@ export const AdminUpload = () => {
     if (file) formData.append("file", file);
 
     const url = editingId
-      // ? `http://localhost:5000/api/newsletters/${editingId}`
-      // : "http://localhost:5000/api/newsletters/upload";
- ? `https://hiwas-backend-production-56c5.up.railway.app/api/newsletters/${editingId}`
+      ? `https://hiwas-backend-production-56c5.up.railway.app/api/newsletters/${editingId}`
       : "https://hiwas-backend-production-56c5.up.railway.app/api/newsletters/upload";
     const method = editingId ? "PUT" : "POST";
 
@@ -99,7 +98,6 @@ export const AdminUpload = () => {
       }
 
       alert(data.message);
-
       resetForm();
       fetchData();
     } catch (err) {
@@ -121,9 +119,7 @@ export const AdminUpload = () => {
 
     try {
       const res = await fetch(
-        // `http://localhost:5000/api/newsletters/${id}`,
         `https://hiwas-backend-production-56c5.up.railway.app/api/newsletters/${id}`,
-
         {
           method: "DELETE",
           headers: {
@@ -138,22 +134,23 @@ export const AdminUpload = () => {
         alert(data.message || "Delete failed");
         return;
       }
-
       alert("Deleted successfully");
       fetchData();
     } catch (err) {
       console.error(err);
     }
   };
-const modules = {
-  toolbar: [
-    [{ header: [1, 2, false] }],
-    ["bold", "italic", "underline", "strike"],
-    [{ list: "ordered" }, { list: "bullet" }],
-    ["link"],
-    ["clean"],
-  ],
-};
+
+  const modules = {
+    toolbar: [
+      [{ header: [1, 2, false] }],
+      ["bold", "italic", "underline", "strike"],
+      [{ list: "ordered" }, { list: "bullet" }],
+      ["link"],
+      ["clean"],
+    ],
+  };
+  
   // ================= EDIT =================
   const handleEdit = (item) => {
     setEditingId(item._id);
@@ -166,7 +163,7 @@ const modules = {
     <div style={{ padding: "40px", maxWidth: "800px", margin: "auto" }}>
       
       {/* 🔐 LOGOUT BUTTON */}
-      <div style={{ display: "flex", justifyContent: "space-between" }}>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
         <h2>
           {editingId ? "✏️ Edit Newsletter" : "📤 Upload Newsletter"}
         </h2>
@@ -187,18 +184,20 @@ const modules = {
         </button>
       </div>
 
-      <form onSubmit={handleSubmit} style={{ display: "grid", gap: "10px" }}>
+      <form onSubmit={handleSubmit} style={{ display: "grid", gap: "15px" }}>
         <input
           type="text"
           placeholder="Title"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
           required
+          style={{ padding: "10px", borderRadius: "5px", border: "1px solid #ddd" }}
         />
 
         <select
           value={category}
           onChange={(e) => setCategory(e.target.value)}
+          style={{ padding: "10px", borderRadius: "5px", border: "1px solid #ddd" }}
         >
           <option value="">-- Select Category --</option>
           <option value="Tiny Architect Big Question">Tiny Architect Big Question</option>
@@ -207,26 +206,79 @@ const modules = {
           <option value="Stethoscope report">Stethoscope report</option>
         </select>
 
-       <ReactQuill
-  theme="snow"
-  value={content}
-  onChange={setContent}
-  modules={modules}
-/>
-
-        <input
-          type="file"
-          accept="image/*"
-          onChange={(e) => setCover(e.target.files[0])}
+        <ReactQuill
+          theme="snow"
+          value={content}
+          onChange={setContent}
+          modules={modules}
+          style={{ height: "200px", marginBottom: "50px" }}
         />
 
-        <input
-          type="file"
-          accept="application/pdf"
-          onChange={(e) => setFile(e.target.files[0])}
-        />
+        {/* COVER IMAGE INPUT */}
+        <div style={{ display: "flex", flexDirection: "column", gap: "5px" }}>
+          <label style={{ fontWeight: "bold", fontSize: "14px" }}>
+            📸 Cover Image
+          </label>
+          <input
+            type="file"
+            accept="image/*"
+            onChange={(e) => {
+              setCover(e.target.files[0]);
+              setCoverName(e.target.files[0]?.name || "");
+            }}
+            style={{ 
+              padding: "10px", 
+              border: "1px solid #ddd", 
+              borderRadius: "5px",
+              cursor: "pointer"
+            }}
+          />
+          {coverName && (
+            <span style={{ fontSize: "12px", color: "#666" }}>
+              Selected: {coverName}
+            </span>
+          )}
+        </div>
 
-        <button type="submit" style={{ padding: "10px" }}>
+        {/* PDF FILE INPUT */}
+        <div style={{ display: "flex", flexDirection: "column", gap: "5px" }}>
+          <label style={{ fontWeight: "bold", fontSize: "14px" }}>
+            📄 PDF File (Optional)
+          </label>
+          <input
+            type="file"
+            accept="application/pdf"
+            onChange={(e) => {
+              setFile(e.target.files[0]);
+              setFileName(e.target.files[0]?.name || "");
+            }}
+            style={{ 
+              padding: "10px", 
+              border: "1px solid #ddd", 
+              borderRadius: "5px",
+              cursor: "pointer"
+            }}
+          />
+          {fileName && (
+            <span style={{ fontSize: "12px", color: "#666" }}>
+              Selected: {fileName}
+            </span>
+          )}
+        </div>
+
+        <button 
+          type="submit" 
+          style={{ 
+            padding: "12px", 
+            background: "#007bff", 
+            color: "white",
+            border: "none",
+            borderRadius: "5px",
+            cursor: "pointer",
+            fontSize: "16px",
+            fontWeight: "bold"
+          }}
+        >
           {editingId ? "Update Newsletter" : "Upload Newsletter"}
         </button>
       </form>
@@ -234,7 +286,6 @@ const modules = {
       <hr style={{ margin: "30px 0" }} />
 
       <h3>📋 All Newsletters</h3>
-
       {list.map((item) => (
         <div
           key={item._id}
@@ -249,22 +300,40 @@ const modules = {
           <h4>{item.title}</h4>
           <p>{item.category}</p>
 
-          <p style={{ fontSize: "13px", color: "#555" }}>
-          <div
-  dangerouslySetInnerHTML={{
-    __html: item.content?.slice(0, 200) + "...",
-  }}
-/>
-          </p>
+          {/* FIXED: Removed the wrapping <p> tag */}
+          <div 
+            style={{ fontSize: "13px", color: "#555" }}
+            dangerouslySetInnerHTML={{
+              __html: item.content?.slice(0, 200) + "...",
+            }}
+          />
 
           <button
             onClick={() => handleEdit(item)}
-            style={{ marginRight: "10px" }}
+            style={{ 
+              marginRight: "10px",
+              padding: "5px 15px",
+              background: "#28a745",
+              color: "white",
+              border: "none",
+              borderRadius: "4px",
+              cursor: "pointer"
+            }}
           >
             ✏️ Edit
           </button>
 
-          <button onClick={() => handleDelete(item._id)}>
+          <button 
+            onClick={() => handleDelete(item._id)}
+            style={{
+              padding: "5px 15px",
+              background: "#dc3545",
+              color: "white",
+              border: "none",
+              borderRadius: "4px",
+              cursor: "pointer"
+            }}
+          >
             🗑 Delete
           </button>
         </div>
