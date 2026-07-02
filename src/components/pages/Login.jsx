@@ -12,7 +12,7 @@ export const Login = () => {
 
     try {
       // const res = await fetch("http://localhost:5000/api/auth/login", {
-const res = await fetch("https://hiwas-backend-production.up.railway.app/api/auth/login", {
+const res = await fetch("https://hiwas-backend-production-3f41.up.railway.app/api/auth/login", {
       method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ username, password }),
