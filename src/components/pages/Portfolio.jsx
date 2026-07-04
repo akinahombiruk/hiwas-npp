@@ -12,9 +12,7 @@ export const Portfolio = () => {
 
   // FETCH DATA
   useEffect(() => {
-    // fetch("http://localhost:5000/api/newsletters")
     fetch("https://hiwas-backend-production-56c5.up.railway.app/api/newsletters")
-
       .then((res) => res.json())
       .then((data) => {
         setList(data);
@@ -28,7 +26,7 @@ export const Portfolio = () => {
   // FILTER
   const filterItems = (cat) => {
     setActiveCategory(cat);
-    setCurrentPage(1); // ✅ reset page when filter changes
+    setCurrentPage(1);
 
     if (cat === "all") {
       setList(allItems);
@@ -74,9 +72,7 @@ export const Portfolio = () => {
               {/* IMAGE */}
               <div className="news-image">
                 <img
-                  // src={`http://localhost:5000${item.cover}`}
                   src={`https://hiwas-backend-production-56c5.up.railway.app${item.cover}`}
-
                   alt={item.title}
                 />
               </div>
@@ -92,9 +88,11 @@ export const Portfolio = () => {
                   {item.title}
                 </h2>
 
-                <p className="news-text">
-                  {item.content}
-                </p>
+                {/* ✅ THIS IS THE ONLY CHANGE - Fixed HTML rendering */}
+                <div 
+                  className="news-text"
+                  dangerouslySetInnerHTML={{ __html: item.content }}
+                />
 
                 {/* DOWNLOAD PDF */}
                 {item.filePath && (
