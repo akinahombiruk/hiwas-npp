@@ -13,7 +13,6 @@
     "@testing-library/user-event": "^13.5.0",
     "aos": "^3.0.0-beta.6",
     "bcryptjs": "^3.0.3",
-    "dompurify": "^3.4.11",
     "framer-motion": "^6.5.0",
     "jsonwebtoken": "^9.0.3",
     "react": "^18.2.0",

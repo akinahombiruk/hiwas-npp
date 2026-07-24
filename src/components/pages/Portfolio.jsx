@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Heading } from "../common/Heading";
-import DOMPurify from 'dompurify';
+import DOMPurify from "dompurify";
 
 export const Portfolio = () => {
   const [list, setList] = useState([]);
@@ -9,25 +9,38 @@ export const Portfolio = () => {
   const [activeCategory, setActiveCategory] = useState("all");
   const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(true);
+
+  // NEW: Store which news items are expanded
+  const [expandedItems, setExpandedItems] = useState({});
+
   const itemsPerPage = 10;
 
   useEffect(() => {
     setLoading(true);
-    fetch("https://hiwas-backend-production-56c5.up.railway.app/api/newsletters")
+
+    fetch(
+      "https://hiwas-backend-production-56c5.up.railway.app/api/newsletters"
+    )
       .then((res) => res.json())
       .then((data) => {
         setList(data);
         setAllItems(data);
+
         const cats = ["all", ...new Set(data.map((i) => i.category))];
         setCategory(cats);
+
         setLoading(false);
       })
-      .catch(() => setLoading(false));
+      .catch((err) => {
+        console.error("Error fetching data:", err);
+        setLoading(false);
+      });
   }, []);
 
   const filterItems = (cat) => {
     setActiveCategory(cat);
     setCurrentPage(1);
+
     if (cat === "all") {
       setList(allItems);
     } else {
@@ -35,13 +48,43 @@ export const Portfolio = () => {
     }
   };
 
+  // NEW: Toggle Read More / Read Less
+  const toggleExpand = (id) => {
+    setExpandedItems((prev) => ({
+      ...prev,
+      [id]: !prev[id],
+    }));
+  };
+
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = list.slice(indexOfFirstItem, indexOfLastItem);
   const totalPages = Math.ceil(list.length / itemsPerPage);
 
+  const getImageUrl = (path) => {
+    if (!path) return null;
+
+    if (path.startsWith("http")) return path;
+
+    const baseUrl =
+      "https://hiwas-backend-production-56c5.up.railway.app";
+
+    if (path.startsWith("/")) return `${baseUrl}${path}`;
+
+    if (path.includes("uploads/")) return `${baseUrl}/${path}`;
+
+    return `${baseUrl}/uploads/${path}`;
+  };
+
   if (loading) {
-    return <div className="container" style={{ padding: "50px", textAlign: "center" }}>Loading...</div>;
+    return (
+      <div
+        className="container"
+        style={{ padding: "50px", textAlign: "center" }}
+      >
+        Loading...
+      </div>
+    );
   }
 
   return (
@@ -54,7 +97,9 @@ export const Portfolio = () => {
             <button
               key={cat}
               onClick={() => filterItems(cat)}
-              className={`primaryBtn ${activeCategory === cat ? "active-filter" : ""}`}
+              className={`primaryBtn ${
+                activeCategory === cat ? "active-filter" : ""
+              }`}
             >
               {cat}
             </button>
@@ -65,24 +110,64 @@ export const Portfolio = () => {
           {currentItems.map((item) => (
             <div key={item._id} className="news-item">
               <div className="news-image">
-                <img
-                  src={`https://hiwas-backend-production-56c5.up.railway.app${item.cover}`}
-                  alt={item.title}
-                />
+                {item.cover ? (
+                  <img
+                    src={getImageUrl(item.cover)}
+                    alt={item.title}
+                    onError={(e) => {
+                      e.target.onerror = null;
+                      e.target.style.display = "none";
+                    }}
+                  />
+                ) : (
+                  <div
+                    style={{
+                      width: "100%",
+                      height: "200px",
+                      background: "#f0f0f0",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      color: "#999",
+                    }}
+                  >
+                    No Image
+                  </div>
+                )}
               </div>
 
               <div className="news-content">
                 <span className="news-category">{item.category}</span>
+
                 <h2 className="news-title">{item.title}</h2>
-                <div 
+
+                <div
                   className="news-text"
-                  dangerouslySetInnerHTML={{ 
-                    __html: DOMPurify.sanitize(item.content?.slice(0, 200) + "...") 
-                  }} 
+                  dangerouslySetInnerHTML={{
+                    __html: DOMPurify.sanitize(
+                      expandedItems[item._id]
+                        ? item.content
+                        : item.content.length > 200
+                        ? item.content.slice(0, 200) + "..."
+                        : item.content
+                    ),
+                  }}
                 />
+
+                {item.content.length > 200 && (
+                  <button
+                    className="read-more-btn"
+                    onClick={() => toggleExpand(item._id)}
+                  >
+                    {expandedItems[item._id]
+                      ? "Read Less"
+                      : "Read More"}
+                  </button>
+                )}
+
                 {item.filePath && (
                   <a
-                    href={`https://hiwas-backend-production-56c5.up.railway.app${item.filePath}`}
+                    href={getImageUrl(item.filePath)}
                     target="_blank"
                     rel="noreferrer"
                     className="download-btn"
@@ -91,6 +176,7 @@ export const Portfolio = () => {
                   </a>
                 )}
               </div>
+
               <div className="news-line"></div>
             </div>
           ))}
@@ -103,7 +189,11 @@ export const Portfolio = () => {
           >
             Prev
           </button>
-          <span>Page {currentPage} of {totalPages}</span>
+
+          <span>
+            Page {currentPage} of {totalPages}
+          </span>
+
           <button
             onClick={() => setCurrentPage(currentPage + 1)}
             disabled={currentPage === totalPages}
